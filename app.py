@@ -185,9 +185,10 @@ using a trained **Random Forest Classifier**.
 > **Disclaimer:** This application predicts loan approval using a trained Machine Learning model. Predictions are for educational purposes only and should not be considered as financial advice or an actual bank decision.
 """)
 
+import os
+
 if __name__ == "__main__":
     demo.launch(
-    server_name="127.0.0.1",
-    server_port=7860,
-    inbrowser=True
-)
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860))
+    )
