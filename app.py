@@ -59,7 +59,14 @@ def predict_loan(
             "unlikely to be approved."
         )
 
-with gr.Blocks(title="Loan Approval Prediction System") as demo:
+with gr.Blocks(
+    title="Loan Approval Prediction System",
+    css="""
+    .gradio-container button[aria-label*="Reset"] {
+        display: none !important;
+    }
+    """
+) as demo:
     gr.Markdown("""
 # 🏦 Loan Approval Prediction System
 
@@ -138,25 +145,54 @@ using a trained **Random Forest Classifier**.
     output = gr.Markdown()
 
     btn = gr.Button("Predict Loan Status", variant="primary")
-
+    reset_btn = gr.Button("🔄 Reset All")
     btn.click(
         predict_loan,
         inputs=[
-    dep,
-    edu,
-    emp,
-    income,
-    loan,
-    loan_term,
-    cibil,
-    residential,
-    commercial,
-    luxury,
-    bank
-],
+            dep,
+            edu,
+            emp,
+            income,
+            loan,
+            loan_term,
+            cibil,
+            residential,
+            commercial,
+            luxury,
+            bank
+        ],
         outputs=output
     )
-
+    reset_btn.click(
+        lambda: (
+            0,
+            "Graduate",
+            "No",
+            500000,
+            1000000,
+            10,
+            650,
+            0,
+            0,
+            300000,
+            0,
+            ""
+        ),
+        outputs=[
+            dep,
+            edu,
+            emp,
+            income,
+            loan,
+            loan_term,
+            cibil,
+            residential,
+            commercial,
+            luxury,
+            bank,
+            output,
+        ],
+    )
     gr.Markdown("""
 ---
 ## 👩‍💻 Developer
@@ -189,6 +225,7 @@ import os
 
 if __name__ == "__main__":
     demo.launch(
-        server_name="0.0.0.0",
-        server_port=int(os.environ.get("PORT", 7860))
+        server_name="127.0.0.1",
+        server_port=7860,
+        inbrowser=True
     )
